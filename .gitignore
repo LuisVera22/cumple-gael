@@ -1,6 +1,10 @@
 # Dependencias
 node_modules/
 
+# El proyecto usa pnpm: no versionar lockfiles de otros gestores
+package-lock.json
+yarn.lock
+
 # Builds
 dist/
 dist-ssr/
