@@ -1,0 +1,224 @@
+/* ===========================
+   VARIABLES DE COLOR (Basado en las imágenes)
+=========================== */
+:root {
+    --bg-cream: #FCF8EE;       /* Fondo general crema claro */
+    --box-bg: #FFFFFF;         /* Fondo de tarjetas blanco/muy claro */
+    --text-brown: #5C3A21;     /* Textos normales y oscuros */
+    --main-brown: #A04A1F;     /* Marrón de botones y títulos principales */
+    --main-orange: #FF9F1C;    /* Naranja para "GAEL", íconos y números */
+    --btn-green: #378A42;      /* Verde para botones de mapa y WhatsApp */
+    --btn-green-hover: #2D7535;
+    --tag-yellow: #FBE6B1;     /* Fondo amarillo claro para etiquetas */
+    --icon-teal: #51B0A5;      /* Color de los iconos fecha/hora */
+    --icon-red: #DF5D5E;       /* Color del icono ubicación */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Baloo 2', cursive;
+    background: var(--bg-cream);
+    color: var(--text-brown);
+    overflow-x: hidden;
+}
+
+/* ===========================
+   MÚSICA FLOTANTE
+=========================== */
+.floating-music {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--main-orange);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.floating-music:hover {
+    transform: scale(1.1);
+}
+
+/* ===========================
+   PANTALLA DE BIENVENIDA
+=========================== */
+.welcome {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(169,225,232,0.15), var(--bg-cream)),
+                url('/assets/img/banner-background.jpeg') center bottom / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.jeep { width: 280px; max-width: 90%; margin-bottom: 20px; }
+.welcome-subtitle { font-size: 24px; color: var(--btn-green); font-weight: 800; text-transform: uppercase;}
+.welcome-title { font-size: 80px; color: var(--main-orange); text-shadow: 4px 4px 0 white; margin: 0 0 30px; line-height: 1; }
+.btn-primary { border: none; background: var(--btn-green); color: white; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-size: 22px; font-family: 'Baloo 2', cursive; font-weight: 800; transition: 0.3s; text-transform: uppercase; box-shadow: 0 5px 15px rgba(55,138,66,0.3); }
+.btn-primary:hover { transform: scale(1.05); background: var(--btn-green-hover); }
+
+/* ===========================
+   CONTENEDOR PRINCIPAL
+=========================== */
+.invitation { padding-bottom: 50px; }
+
+.hero { width: 100%; display: flex; justify-content: center; padding: 20px; margin-bottom: 20px; }
+.hero-image { width: 100%; max-width: 650px; border-radius: 15px; }
+
+.container-center { max-width: 800px; margin: 0 auto; padding: 0 20px; text-align: center; }
+
+/* ===========================
+   CUENTA REGRESIVA
+=========================== */
+.countdown-sec h2 { color: var(--main-brown); font-size: 26px; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.timer-boxes { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+.timer-box { background: var(--box-bg); padding: 15px; border-radius: 15px; min-width: 75px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.timer-box span { font-size: 26px; font-weight: 800; color: var(--main-orange); display: block; line-height: 1; }
+.timer-box p { font-size: 16px; font-weight: 600; color: var(--text-brown); margin-top: 5px; }
+
+/* ===========================
+   DETALLES DE LA AVENTURA
+=========================== */
+.title-pill { background: var(--main-brown); color: white; border-radius: 30px; padding: 12px 35px; display: inline-block; font-size: 24px; font-weight: 800; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 0.5px; }
+
+.details-grid { display: flex; justify-content: center; align-items: center; max-width: 600px; margin: 0 auto; }
+.detail-col { flex: 1; text-align: center; }
+.detail-col i { font-size: 38px; margin-bottom: 15px; }
+.detail-col h3 { font-size: 18px; font-weight: 800; color: var(--main-brown); text-transform: uppercase; margin-bottom: 5px; }
+.detail-col p { font-size: 18px; font-weight: 700; color: var(--text-brown); line-height: 1.2; }
+
+/* Colores de los iconos */
+.icon-teal { color: var(--icon-teal); }
+.icon-red { color: var(--icon-red); }
+
+.vertical-dashed { width: 2px; height: 70px; border-right: 2px dashed #D2C4A7; margin: 0 15px; }
+
+/* ===========================
+   TARJETAS DE INFORMACIÓN
+=========================== */
+.info-cards-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 40px; margin-bottom: 50px; }
+.info-card { background: var(--box-bg); border-radius: 20px; padding: 25px 20px; width: 230px; box-shadow: 0 6px 20px rgba(0,0,0,0.04); text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+.tag { background: var(--tag-yellow); color: var(--main-brown); font-size: 14px; font-weight: 800; text-transform: uppercase; padding: 6px 18px; border-radius: 20px; margin-bottom: 20px; }
+.info-card p { font-size: 17px; font-weight: 700; color: var(--text-brown); margin-bottom: 15px; line-height: 1.3; }
+
+/* Círculos Dress Code */
+.circles { display: flex; gap: 10px; margin-top: auto; }
+.circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.circle-green { background: #235C27; }
+.circle-brown { background: #4E3224; }
+
+/* Iconos de tarjetas */
+.card-img-icon { width: 60px; height: 60px; object-fit: contain; margin-bottom: 15px; }
+
+/* Botón Mapa */
+.btn-map { background: var(--btn-green); color: white; border: none; padding: 12px 20px; border-radius: 25px; font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.3s; margin-top: auto; }
+.btn-map:hover { background: var(--btn-green-hover); transform: scale(1.05); }
+
+/* ===========================
+   LISTA DE REGALOS
+=========================== */
+.gifts-section { margin: 50px 0; }
+.gifts-title { font-size: 26px; font-weight: 800; color: var(--main-brown); text-transform: uppercase; margin-bottom: 25px; }
+.gifts-box { border: 3px dashed var(--main-brown); border-radius: 30px; padding: 35px 30px; max-width: 650px; margin: 0 auto; text-align: left; }
+
+.gifts-list { list-style: none; }
+.gifts-list li { display: flex; align-items: center; gap: 15px; margin-bottom: 18px; font-size: 19px; font-weight: 700; color: var(--text-brown); }
+.gifts-list li:last-child { margin-bottom: 0; }
+.gifts-list li i { color: var(--main-orange); font-size: 22px; }
+
+/* ===========================
+   CONFIRMAR ASISTENCIA
+=========================== */
+.confirm-box { background: var(--main-brown); border-radius: 25px; padding: 40px 20px; max-width: 700px; margin: 0 auto 50px; color: white; text-align: center; box-shadow: 0 10px 25px rgba(160,74,31,0.2); }
+.confirm-box h2 { font-size: 32px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+.confirm-box p { font-size: 18px; font-weight: 500; margin-bottom: 30px; line-height: 1.3; }
+
+.wa-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+.btn-wa { background: var(--btn-green); color: white; text-decoration: none; padding: 15px 25px; border-radius: 30px; font-size: 16px; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+.btn-wa i { font-size: 20px; }
+.btn-wa:hover { background: var(--btn-green-hover); transform: translateY(-3px); }
+
+/* ===========================
+   FINAL
+=========================== */
+.final-section { text-align: center; padding: 20px; }
+.final-text { font-size: 20px; font-weight: 800; color: var(--text-brown); }
+.final-title { font-size: 70px; color: var(--main-orange); font-weight: 800; line-height: 1; margin: 10px 0; }
+.final-subtitle { font-size: 24px; font-weight: 800; color: var(--main-brown); margin-bottom: 30px; text-transform: uppercase; }
+
+/* Contenedor simulado para Jeep Final según la imagen */
+.jeep-final-box { width: 280px; height: 150px; border: 1px solid #E0D5C1; margin: 0 auto; display: flex; align-items: flex-start; padding: 10px; color: #A0988A; font-size: 14px; background: transparent; }
+
+/* ===========================
+   ANIMACIONES
+=========================== */
+.fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+/* ===========================
+   TEMA JUNGLA (imágenes de la invitación)
+=========================== */
+
+/* HERO: banner completo con arte */
+.hero { padding: 0; margin-bottom: 10px; }
+.hero-image { width: 100%; max-width: 793px; border-radius: 0; display: block; }
+
+/* DETALLES: banda de cabecera (footer-4) + valores debajo */
+.details-header { width: 100%; max-width: 600px; display: block; margin: 0 auto 5px; border-radius: 12px; }
+.details-values { display: flex; justify-content: center; align-items: flex-start; max-width: 600px; margin: 0 auto 40px; }
+.details-values .detail-col { flex: 1; padding: 0 5px; }
+.details-values .detail-col p { font-size: 18px; font-weight: 700; color: var(--text-brown); line-height: 1.2; }
+
+/* TARJETAS: círculos de dress code con "prohibido" */
+.circle-wrap { position: relative; display: inline-flex; }
+.circle-x { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--icon-red); font-size: 22px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+
+/* GIFTS: fondo decorativo con oso safari */
+.gifts-section {
+    background: url('/assets/img/background-1.jpeg') center / cover no-repeat;
+    border-radius: 25px;
+    padding: 40px 20px 55px;
+    max-width: 720px;
+    margin: 50px auto;
+}
+.gifts-section .gifts-box { background: rgba(255,255,255,0.72); border-color: var(--main-brown); }
+
+/* CONFIRMAR: letrero de madera decorativo (footer-3) */
+.confirm-sign { width: 100%; max-width: 500px; display: block; margin: 0 auto -30px; position: relative; z-index: 1; }
+
+/* FINAL: banda de animales (footer.jpeg) */
+.final-band { width: 100%; max-width: 798px; display: block; margin: 20px auto 0; }
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media(max-width: 600px) {
+    .welcome-title { font-size: 60px; }
+    .details-grid { flex-direction: column; gap: 20px; }
+    .vertical-dashed { width: 80%; height: 2px; border-right: none; border-bottom: 2px dashed #D2C4A7; margin: 10px 0; }
+    .wa-buttons { flex-direction: column; }
+    .btn-wa { width: 100%; justify-content: center; }
+    .gifts-list li { font-size: 16px; }
+    .gifts-box { padding: 25px 20px; }
+}
