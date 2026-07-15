@@ -9,6 +9,11 @@ import Final from './Final'
 export default function Invitation() {
   return (
     <main className="invitation">
+      {/* Abejita volando sobre la invitación (fija al viewport durante el scroll) */}
+      <div className="bee-flight bee-fixed" aria-hidden="true">
+        <img className="bee" src="/assets/characters/abeja.png" alt="" />
+      </div>
+
       {/* PORTADA / BANNER */}
       <FadeUp className="hero">
         <img

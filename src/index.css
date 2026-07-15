@@ -22,6 +22,8 @@
 
 html {
     scroll-behavior: smooth;
+    background: var(--bg-cream);
+    overflow-x: hidden;
 }
 
 body {
@@ -29,6 +31,7 @@ body {
     background: var(--bg-cream);
     color: var(--text-brown);
     overflow-x: hidden;
+    width: 100%;
 }
 
 /* ===========================
@@ -61,8 +64,8 @@ body {
 .welcome {
     width: 100%;
     height: 100vh;
-    background: linear-gradient(to bottom, rgba(169,225,232,0.15), var(--bg-cream)),
-                url('/assets/img/banner-background.jpeg') center bottom / cover no-repeat;
+    height: 100dvh; /* viewport dinámico: evita el hueco por la barra del navegador móvil */
+    background: linear-gradient(to bottom, #A9E1E8 0%, #C9E9E2 45%, var(--bg-cream) 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,7 +83,8 @@ body {
 /* ===========================
    CONTENEDOR PRINCIPAL
 =========================== */
-.invitation { padding-bottom: 50px; }
+/* overflow:hidden recorta a PlimPlim en el borde inferior (como la portada) */
+.invitation { overflow: hidden; }
 
 .hero { width: 100%; display: flex; justify-content: center; padding: 20px; margin-bottom: 20px; }
 .hero-image { width: 100%; max-width: 650px; border-radius: 15px; }
@@ -90,6 +94,7 @@ body {
 /* ===========================
    CUENTA REGRESIVA
 =========================== */
+.countdown-sec { margin-top: 45px; }
 .countdown-sec h2 { color: var(--main-brown); font-size: 26px; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
 .timer-boxes { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
 .timer-box { background: var(--box-bg); padding: 15px; border-radius: 15px; min-width: 75px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
@@ -123,8 +128,14 @@ body {
 .info-card p { font-size: 17px; font-weight: 700; color: var(--text-brown); margin-bottom: 15px; line-height: 1.3; }
 
 /* Círculos Dress Code */
-.circles { display: flex; gap: 10px; margin-top: auto; }
-.circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+/* Cuerpo de la tarjeta: reparte el espacio bajo el tag de forma pareja */
+.card-body { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; }
+.card-body p { margin-bottom: 0; }
+
+.circles { display: flex; gap: 12px; }
+.circle-wrap { position: relative; display: inline-block; line-height: 0; }
+.circle { display: block; width: 38px; height: 38px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.circle-x { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
 .circle-green { background: #235C27; }
 .circle-brown { background: #4E3224; }
 
@@ -184,31 +195,361 @@ body {
 .hero { padding: 0; margin-bottom: 10px; }
 .hero-image { width: 100%; max-width: 793px; border-radius: 0; display: block; }
 
-/* DETALLES: banda de cabecera (footer-4) + valores debajo */
-.details-header { width: 100%; max-width: 600px; display: block; margin: 0 auto 5px; border-radius: 12px; }
-.details-values { display: flex; justify-content: center; align-items: flex-start; max-width: 600px; margin: 0 auto 40px; }
-.details-values .detail-col { flex: 1; padding: 0 5px; }
-.details-values .detail-col p { font-size: 18px; font-weight: 700; color: var(--text-brown); line-height: 1.2; }
-
-/* TARJETAS: círculos de dress code con "prohibido" */
-.circle-wrap { position: relative; display: inline-flex; }
-.circle-x { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--icon-red); font-size: 22px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-
-/* GIFTS: fondo decorativo con oso safari */
-.gifts-section {
-    background: url('/assets/img/background-1.jpeg') center / cover no-repeat;
-    border-radius: 25px;
-    padding: 40px 20px 55px;
-    max-width: 720px;
-    margin: 50px auto;
+/* ===========================
+   PERSONAJES (recortes sin fondo) + MOVIMIENTO SUTIL
+=========================== */
+.char {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    filter: drop-shadow(0 5px 6px rgba(60,40,20,0.18));
+    z-index: 3;
 }
-.gifts-section .gifts-box { background: rgba(255,255,255,0.72); border-color: var(--main-brown); }
 
-/* CONFIRMAR: letrero de madera decorativo (footer-3) */
-.confirm-sign { width: 100%; max-width: 500px; display: block; margin: 0 auto -30px; position: relative; z-index: 1; }
+@keyframes bob {   /* flotar suave arriba/abajo */
+    0%, 100% { transform: translateY(0)     rotate(var(--tilt, 0deg)); }
+    50%      { transform: translateY(-9px)  rotate(var(--tilt, 0deg)); }
+}
+@keyframes sway {  /* balanceo tipo péndulo */
+    0%, 100% { transform: rotate(calc(var(--tilt, 0deg) - 4deg)); }
+    50%      { transform: rotate(calc(var(--tilt, 0deg) + 4deg)); }
+}
+@keyframes swing { /* columpio (pivote arriba) */
+    0%, 100% { transform: rotate(-7deg); }
+    50%      { transform: rotate(7deg); }
+}
+@keyframes pop {   /* respiración/escala */
+    0%, 100% { transform: scale(1)    rotate(var(--tilt, 0deg)); }
+    50%      { transform: scale(1.05) rotate(var(--tilt, 0deg)); }
+}
 
-/* FINAL: banda de animales (footer.jpeg) */
-.final-band { width: 100%; max-width: 798px; display: block; margin: 20px auto 0; }
+.anim-bob   { animation: bob   var(--dur, 4s)   ease-in-out infinite; }
+.anim-sway  { animation: sway  var(--dur, 5s)   ease-in-out infinite; }
+.anim-swing { animation: swing var(--dur, 3.5s) ease-in-out infinite; transform-origin: top center; }
+.anim-pop   { animation: pop   var(--dur, 3s)   ease-in-out infinite; }
+
+/* Personajes que "se asoman" desde los bordes de una sección.
+   Por defecto van estáticos (anclados a su vegetación); usa anim="none". */
+.section-peek { position: relative; }
+.peeker { position: absolute; bottom: 0; z-index: 3; }
+.peeker.left  { left: 0; }
+.peeker.right { right: 0; }
+/* Variante: pegado al extremo real de la pantalla (dentro de la franja de hojas),
+   aunque la sección viva en el contenedor centrado */
+.peeker.edge.left  { left: calc(50% - 50vw); }
+.peeker.edge.right { right: calc(50% - 50vw); }
+
+/* Movimiento ligero opt-in (usa 'translate' para no pisar el scale de móvil) */
+@keyframes float-soft {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -8px; }
+}
+.float-soft { animation: float-soft var(--dur, 4.5s) ease-in-out infinite; }
+
+/* Personajes que vienen CON arbusto en recorte rectangular (mono, tigre):
+   difumina los 4 bordes para que el follaje se funda con el resto y no se vea
+   el rectángulo. Se pegan al borde de la sección. */
+.bushy {
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 15%, #000 85%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0, #000 15%, #000 85%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+    mask-composite: intersect;
+    filter: none;
+}
+
+/* Marco de hojas: enmarca las 4 esquinas para "completar" los bordes.
+   Cada hoja ocupa ~55% del alto, así arriba y abajo se juntan en el centro. */
+.leaf-corner {
+    position: absolute;
+    height: 62%;
+    width: auto;
+    z-index: 1;
+    pointer-events: none;
+    /* Difumina el borde interior (hacia el centro) para ocultar la costura */
+    -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+}
+.leaf-corner.top    { top: 0; }
+.leaf-corner.bottom { bottom: 0; }
+.leaf-corner.left   { left: 0; }
+.leaf-corner.right  { right: 0; }
+.leaf-corner.right.top    { transform: scaleX(-1); }
+.leaf-corner.left.bottom  { transform: scaleY(-1); }
+.leaf-corner.right.bottom { transform: scale(-1, -1); }
+
+/* Franja continua de hojas a ambos lados de la invitación y la portada */
+.invitation { position: relative; z-index: 0; }
+.invitation::before,
+.invitation::after,
+.welcome::before,
+.welcome::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 135px;
+    background: url('/assets/ui/leaves.png') top center / 135px auto repeat-y;
+    z-index: -1;
+    pointer-events: none;
+}
+.invitation::before { left: 0; }
+.invitation::after  { right: 0; transform: scaleX(-1); }
+
+/* En la portada las franjas van sobre el degradado del cielo (z 0),
+   debajo de esquinas (z 1), personajes y contenido (z 2+) */
+.welcome::before, .welcome::after { z-index: 0; }
+.welcome::before { left: 0; }
+.welcome::after  { right: 0; transform: scaleX(-1); }
+
+/* El contenido siempre por encima de las hojas */
+.timer-boxes, .info-cards-container, .final-lineup, .gifts-box, .details-grid,
+.confirm-sign-box, .title-pill, .countdown-sec h2, .gifts-title { position: relative; z-index: 2; }
+
+/* ===========================
+   CABECERAS DE MADERA / MAPA (recortes limpios)
+=========================== */
+.wood-header { width: 100%; max-width: 480px; display: block; margin: 0 auto 25px; }
+
+/* Letrero con personaje parado encima */
+.wood-header-wrap { position: relative; max-width: 480px; margin: 70px auto 0; z-index: 2; }
+.wood-header-wrap .wood-header { max-width: 100%; margin-bottom: 25px; }
+.on-sign {
+    position: absolute;
+    left: 14%;
+    bottom: calc(100% - 16px); /* patas apoyadas sobre el borde superior */
+    z-index: -1;               /* detrás del letrero: asoma desde atrás */
+}
+
+.map-link { display: block; line-height: 0; }
+.map-link img { width: 170px; max-width: 100%; transition: transform 0.3s; }
+.map-link:hover img { transform: scale(1.05); }
+
+/* CONFIRMAR: el texto va DENTRO del letrero de madera */
+.confirm-sign-box {
+    position: relative;
+    max-width: 520px;
+    margin: 30px auto 50px;
+    container-type: inline-size;
+}
+.confirm-sign-img { width: 100%; display: block; }
+
+.confirm-overlay { position: absolute; inset: 0; }
+
+/* Título + subtítulo sobre la madera (parte superior) */
+.confirm-text {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 6%;
+    height: 56%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 3px rgba(60,25,10,0.45);
+}
+.confirm-text h2 {
+    font-size: 6.4cqw;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 2.5cqw;
+}
+.confirm-text p {
+    font-size: 3.2cqw;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Botones (papá / mamá) sobre la barra verde dibujada del letrero */
+.confirm-cta-row {
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 22%;
+    display: flex;
+    align-items: stretch;
+}
+.confirm-cta {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2cqw;
+    color: #fff;
+    font-weight: 800;
+    font-size: 3.6cqw;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    transition: transform 0.2s;
+}
+.confirm-cta + .confirm-cta { border-left: 2px solid rgba(255,255,255,0.55); }
+.confirm-cta i { font-size: 4.4cqw; }
+.confirm-cta:hover { transform: scale(1.06); }
+
+/* GIFTS: caja sobre crema (sin fondo con personajes) */
+.gifts-section { padding-bottom: 55px; }
+/* Pequeño margen inferior para el oso de la esquina */
+.gifts-box { padding-bottom: 35px; }
+
+/* FINAL: PlimPlim asomándose desde abajo (espejo de la portada) */
+.final-section { padding-bottom: 300px !important; }
+.final-hero {
+    --peek: 22%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, var(--peek));
+    transform-origin: 50% 100%;
+    width: clamp(200px, 40vw, 280px);
+    z-index: 2;
+    filter: drop-shadow(0 10px 12px rgba(60,40,20,0.22));
+    pointer-events: none;
+    animation: hero-rock 4.5s ease-in-out infinite;
+}
+
+/* ===========================
+   BIENVENIDA (portada de entrada)
+=========================== */
+.welcome { position: relative; overflow: hidden; }
+/* PlimPlim anclado abajo al centro; se ve de la mitad hacia arriba */
+.welcome-hero {
+    --peek: 20%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, var(--peek));
+    transform-origin: 50% 100%;
+    width: clamp(250px, 58vw, 360px);
+    z-index: 2;
+    filter: drop-shadow(0 10px 12px rgba(60,40,20,0.22));
+    pointer-events: none;
+    animation: hero-rock 4.5s ease-in-out infinite;
+}
+
+/* Balanceo suave de PlimPlim: sube un pelín y se mece sobre su base */
+@keyframes hero-rock {
+    0%, 100% { transform: translate(-50%, var(--peek)) rotate(-1.4deg); }
+    50%      { transform: translate(-50%, calc(var(--peek) - 2.5%)) rotate(1.4deg); }
+}
+.welcome-content { position: relative; z-index: 5; text-align: center; }
+.welcome .peeker { z-index: 3; }
+
+/* Respeto por usuarios que prefieren menos movimiento */
+/* ===========================
+   ABEJITA VOLADORA (portada)
+   Capa exterior: trayectoria en arcos por el cielo, con "banking"
+   (se inclina al subir/bajar) y regreso volteada, como en animación clásica.
+   Capa interior: flotación suave constante (aleteo).
+=========================== */
+.bee-flight {
+    position: absolute;
+    top: 0; left: 0;
+}
+/* En la invitación va fija al viewport: acompaña el scroll volando */
+.bee-fixed { position: fixed; }
+.bee-flight {
+    width: 110px;
+    z-index: 3;
+    pointer-events: none;
+    animation: bee-path 22s ease-in-out infinite;
+    will-change: transform;
+}
+.bee-flight .bee {
+    width: 100%;
+    display: block;
+    animation: bee-hover 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 8px 10px rgba(60, 40, 20, 0.18));
+}
+
+/* Ida (mira a la derecha) → giro fuera de pantalla → vuelta (volteada) */
+@keyframes bee-path {
+    0%     { transform: translate(-15vw, 24vh) rotate(8deg); }
+    8%     { transform: translate(8vw, 12vh)  rotate(-9deg); }
+    18%    { transform: translate(27vw, 21vh) rotate(7deg); }
+    30%    { transform: translate(50vw, 7vh)  rotate(-9deg); }
+    42%    { transform: translate(80vw, 17vh) rotate(5deg); }
+    50%    { transform: translate(112vw, 9vh) rotate(-6deg); }
+    50.01% { transform: translate(112vw, 9vh) scaleX(-1) rotate(6deg); }
+    60%    { transform: translate(80vw, 22vh) scaleX(-1) rotate(-7deg); }
+    72%    { transform: translate(52vw, 10vh) scaleX(-1) rotate(7deg); }
+    84%    { transform: translate(25vw, 23vh) scaleX(-1) rotate(-6deg); }
+    94%    { transform: translate(4vw, 13vh)  scaleX(-1) rotate(6deg); }
+    100%   { transform: translate(-15vw, 24vh) scaleX(-1) rotate(-5deg); }
+}
+
+/* Flotación con ligero balanceo: la vida del vuelo */
+@keyframes bee-hover {
+    0%, 100% { transform: translateY(0)     rotate(-2.5deg); }
+    50%      { transform: translateY(-13px) rotate(2.5deg); }
+}
+
+/* ===========================
+   TELÓN DE ARBUSTOS (transición de entrada)
+   Fase "closing": cada mitad crece desde su borde hacia el centro; como el
+   fondo de hojas está anclado al borde exterior y la anchura crece por pasos,
+   las columnas de arbustos van "multiplicándose" hacia adentro.
+   Fase "opening": ambas mitades se deslizan hacia los lados (cortina).
+=========================== */
+.leaf-curtain { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+
+.curtain-half { position: absolute; top: 0; bottom: 0; width: 52vw; }
+.curtain-half.left  { left: 0; }
+.curtain-half.right { right: 0; }
+
+/* Cada mata brota con rebote (pop) según su retardo: afuera → centro */
+.leaf-sprite {
+    position: absolute;
+    width: clamp(150px, 18vw, 240px);
+    transform: translate(-50%, -50%) scale(0);
+    animation: leaf-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    filter: drop-shadow(0 4px 8px rgba(20, 45, 22, 0.3));
+}
+/* Las de la mitad derecha se posicionan desde su borde derecho */
+.curtain-half.right .leaf-sprite { transform: translate(50%, -50%) scale(0); }
+
+@keyframes leaf-pop {
+    0% {
+        transform: translate(var(--tx, -50%), -50%)
+                   rotate(calc(var(--rot) - 35deg)) scale(0);
+    }
+    70% {
+        transform: translate(var(--tx, -50%), -50%)
+                   rotate(var(--rot)) scaleX(calc(var(--sx) * var(--s) * 1.12)) scaleY(calc(var(--s) * 1.12));
+    }
+    100% {
+        transform: translate(var(--tx, -50%), -50%)
+                   rotate(var(--rot)) scaleX(calc(var(--sx) * var(--s))) scaleY(var(--s));
+    }
+}
+.curtain-half.right .leaf-sprite { --tx: 50%; }
+
+/* Apertura tipo cortina: cada mitad se desliza hacia su lado */
+.leaf-curtain.opening .curtain-half.left  { animation: curtain-open-left 1.1s ease-in-out forwards; }
+.leaf-curtain.opening .curtain-half.right { animation: curtain-open-right 1.1s ease-in-out forwards; }
+@keyframes curtain-open-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-110%); }
+}
+@keyframes curtain-open-right {
+    from { transform: translateX(0); }
+    to   { transform: translateX(110%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .char, .welcome-hero, .final-hero, [class*="anim-"] { animation: none !important; }
+    .bee-flight, .leaf-curtain { display: none; }
+}
 
 /* ===========================
    RESPONSIVE
@@ -220,5 +561,28 @@ body {
     .wa-buttons { flex-direction: column; }
     .btn-wa { width: 100%; justify-content: center; }
     .gifts-list li { font-size: 16px; }
-    .gifts-box { padding: 25px 20px; }
+    .gifts-box { padding: 25px 20px 75px; }
+
+    /* Franja de hojas más angosta en móvil */
+    .invitation::before,
+    .invitation::after,
+    .welcome::before,
+    .welcome::after { width: 62px; background-size: 62px auto; }
+
+    /* Aire sobre el letrero para que la cebra no toque los contadores */
+    .bee-flight { width: 68px; }
+    .wood-header-wrap { margin-top: 52px; }
+    .on-sign { width: 56px !important; }
+
+    /* Personajes asomados y hojas más discretos en móvil */
+    .peeker { transform: scale(0.72); transform-origin: bottom; }
+    .leaf-corner { height: 42%; }
+    .leaf-corner.right.top    { transform: scaleX(-1); }
+    .leaf-corner.left.bottom  { transform: scaleY(-1); }
+    .leaf-corner.right.bottom { transform: scale(-1, -1); }
+    .final-lineup img { margin: 0 -6px; }
 }
+
+/* Espacio inferior para que los personajes asomados no pisen el contenido */
+.section-peek { padding-bottom: 30px; }
+.confirm-box, .details-grid, .gifts-box { position: relative; z-index: 2; }

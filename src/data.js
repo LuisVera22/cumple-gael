@@ -1,10 +1,6 @@
 /**
  * Contenido de la invitación.
  * Edita aquí los textos, fechas y enlaces.
- *
- * ⚠️ PENDIENTES (reemplaza los valores placeholder):
- *   - mapUrl        -> enlace real de Google Maps de la casa
- *   - confirm.phone -> número de WhatsApp para confirmar (formato internacional, sin "+")
  */
 export const invitationData = {
   // Pantalla de bienvenida
@@ -29,8 +25,8 @@ export const invitationData = {
     place: 'Casa de mi\nmamita Eda',
   },
 
-  // Enlace del mapa (Google Maps) — ⚠️ reemplazar
-  mapUrl: 'https://maps.google.com',
+  // Enlace del mapa (Google Maps)
+  mapUrl: 'https://maps.app.goo.gl/YHVAyC2NQtum9wAB6?g_st=iwb',
 
   // Tarjetas de información
   cards: {
@@ -62,13 +58,15 @@ export const invitationData = {
     ],
   },
 
-  // Confirmar asistencia
+  // Confirmar asistencia (papá y mamá por WhatsApp)
   confirm: {
     title: '¡Confirma asistencia!',
     text: 'Tu compañía hará esta aventura aún más especial',
-    buttonText: '¡Sí, confirmo mi asistencia!',
-    phone: '51999999999', // ⚠️ reemplazar
-    message: 'Hola, confirmo mi asistencia al cumple de Gael 🎉',
+    message: 'Confirmo mi asistencia al primer año de Gael 🎉',
+    whatsapps: [
+      { label: 'Papá', phone: '51945952161' },
+      { label: 'Mamá', phone: '51936431952' },
+    ],
   },
 
   // Sección final
